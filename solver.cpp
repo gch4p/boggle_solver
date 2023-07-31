@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -10,7 +11,7 @@ using namespace std;
 
 struct Node {
     struct Node *children[N];
-    bool EOW; // end of word
+    bool EOW = false; // end of word
 };
 
 struct Node *getNode() {
@@ -97,13 +98,19 @@ public:
 private:
     char board[25];
     vector<int> neighbors;
+    vector<string> foundWords;
     void showNeighbors();
-    //void solver::findWords(vector<int> path);
+    void showWords(int count);
+    void findWords(vector<int> path,string word);
 };
 
 void solver::load(string path) {
-    struct Node *root = getNode();
+    root = getNode();
     loadWords(root, path);
+}
+
+bool lengthCompare(string a, string b) {
+    return a.length() > b.length();
 }
 
 void solver::solve(string input) {
@@ -111,17 +118,49 @@ void solver::solve(string input) {
 
     showNeighbors();
     for (int idx = 0; idx < 25; ++idx) {
-        //findWords({idx},"");
+        findWords({idx},"");
+    }
+
+    sort(foundWords.begin(), foundWords.end(), lengthCompare);
+    showWords(10);
+}
+
+void solver::showWords(int count=10) {
+    count = min(count, (int) foundWords.size());
+
+    cout << "Displaying top words:" << endl;
+    for (int i = 0; i < count;++i) {
+        cout << foundWords[i] << endl;
     }
 }
 
-// void solver::findWords(vector<int> path,string word) {
-//     word += (board[path.back()]);
+bool inPath(vector<int> vec, int key) {
+    for (int &i : vec) {
+        if (i == key)
+            return true;
+    }
+    return false;
+}
 
-//     for (int &i : path) {
+void solver::findWords(vector<int> path,string word) {
+    int idx = path.back();
+    word += (board[idx]);
 
-//     }
-// }
+    if (!canMakeWord(root,word))
+        return;
+    
+    if (isWord(root,word))
+        foundWords.push_back(word);
+
+    getNeighbors(idx);
+    vector<int> tmp = neighbors;
+    for (const int &i : tmp) {
+        if (inPath(path,i))
+            continue;
+        path.push_back(i);
+        findWords(path, word);
+    }
+}
 
 // parsing board as follows:
 // 0 1 2 3 4
