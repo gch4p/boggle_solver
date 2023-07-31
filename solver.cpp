@@ -73,6 +73,9 @@ void loadWords(Node *root, string path) {
 
 class solver {
 public:
+    struct Node *root;
+
+    void load(string path);
     void solve(string input);
     void parseInput(string input);
     void getNeighbors(int idx);
@@ -82,6 +85,11 @@ private:
     vector<int> neighbors;
     void showNeighbors();
 };
+
+void solver::load(string path) {
+    struct Node *root = getNode();
+    loadWords(root, path);
+}
 
 void solver::solve(string input) {
     parseInput(input);
@@ -159,10 +167,10 @@ void solver::showNeighbors() {
 }
 
 int main() {
-    struct Node *root = getNode();
+    solver solver;
 
     cout << "Loading wordlist...\n";
-    loadWords(root, "words.txt");
+    solver.load("words.txt");
     cout << "Wordlist loaded.\nEnter board state: ";
 
     // cout << inTrie(root, "WHERE") << endl;
@@ -175,7 +183,6 @@ int main() {
         return 1;
     }
 
-    solver solver;
     solver.solve(input);
 
     return 0;
