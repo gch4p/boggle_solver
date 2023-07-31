@@ -74,6 +74,14 @@ void parseInput(char board[5][5], string input) {
     }
 }
 
+// void printBoard(char board[5][5]) {
+//     int idx = 0;
+//     while (idx < 25) {
+//         cout << board[idx / 5][idx % 5];
+//         ++idx;
+//     }
+// }
+
 int main() {
     struct Node *root = getNode();
 
