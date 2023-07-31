@@ -62,6 +62,18 @@ void loadWords(Node *root, string path) {
     words.close();
 }
 
+// parsing board as follows:
+// 1 2 3 4 5
+// 6 7 8 9 10
+// ...
+void parseInput(char board[5][5], string input) {
+    int idx = 0;
+    for (char &c : input) {
+        board[idx / 5][idx % 5] = c;
+        ++idx;
+    }
+}
+
 int main() {
     struct Node *root = getNode();
 
@@ -71,6 +83,16 @@ int main() {
 
     // cout << inTrie(root, "WHERE") << endl;
     // cout << inTrie(root, "WWWWW") << endl;
+
+    string input;
+    cin >> input;
+    if (input.length() != 25) {
+        cout << "Invalid input";
+        return 1;
+    }
+
+    char board[5][5];
+    parseInput(board, input);
 
     return 0;
 }
