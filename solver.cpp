@@ -72,11 +72,22 @@ void loadWords(Node *root, string path) {
 
 class solver {
 public:
+    void solve(string input);
     void parseInput(string input);
+    void getNeighbors(int idx);
 
 private:
     char board[5][5];
+    int neighbors[8];
 };
+
+void solver::solve(string input) {
+    parseInput(input);
+
+    for (int idx = 0; idx < 25; ++idx) {
+        getNeighbors(idx);
+    }
+}
 
 // parsing board as follows:
 // 1 2 3 4 5
@@ -88,6 +99,9 @@ void solver::parseInput(string input) {
         board[idx / 5][idx % 5] = c;
         ++idx;
     }
+}
+
+void solver::getNeighbors(int idx) {
 }
 
 int main() {
@@ -108,7 +122,7 @@ int main() {
     }
 
     solver solver;
-    solver.parseInput(input);
+    solver.solve(input);
 
     return 0;
 }
