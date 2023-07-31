@@ -62,18 +62,6 @@ void loadWords(Node *root, string path) {
     words.close();
 }
 
-// parsing board as follows:
-// 1 2 3 4 5
-// 6 7 8 9 10
-// ...
-void parseInput(char board[5][5], string input) {
-    int idx = 0;
-    for (char &c : input) {
-        board[idx / 5][idx % 5] = c;
-        ++idx;
-    }
-}
-
 // void printBoard(char board[5][5]) {
 //     int idx = 0;
 //     while (idx < 25) {
@@ -81,6 +69,26 @@ void parseInput(char board[5][5], string input) {
 //         ++idx;
 //     }
 // }
+
+class solver {
+public:
+    void parseInput(string input);
+
+private:
+    char board[5][5];
+};
+
+// parsing board as follows:
+// 1 2 3 4 5
+// 6 7 8 9 10
+// ...
+void solver::parseInput(string input) {
+    int idx = 0;
+    for (char &c : input) {
+        board[idx / 5][idx % 5] = c;
+        ++idx;
+    }
+}
 
 int main() {
     struct Node *root = getNode();
@@ -99,8 +107,8 @@ int main() {
         return 1;
     }
 
-    char board[5][5];
-    parseInput(board, input);
+    solver solver;
+    solver.parseInput(input);
 
     return 0;
 }
