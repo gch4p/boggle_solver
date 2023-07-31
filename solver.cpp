@@ -95,9 +95,10 @@ public:
     void getNeighbors(int idx);
 
 private:
-    char board[5][5];
+    char board[25];
     vector<int> neighbors;
     void showNeighbors();
+    //void solver::findWords(vector<int> path);
 };
 
 void solver::load(string path) {
@@ -110,9 +111,17 @@ void solver::solve(string input) {
 
     showNeighbors();
     for (int idx = 0; idx < 25; ++idx) {
-        getNeighbors(idx);
+        //findWords({idx},"");
     }
 }
+
+// void solver::findWords(vector<int> path,string word) {
+//     word += (board[path.back()]);
+
+//     for (int &i : path) {
+
+//     }
+// }
 
 // parsing board as follows:
 // 0 1 2 3 4
@@ -122,10 +131,13 @@ void solver::solve(string input) {
 // 20 21 22 23 24
 // ...
 void solver::parseInput(string input) {
-    int idx = 0;
-    for (char &c : input) {
-        board[idx / 5][idx % 5] = c;
-        ++idx;
+    // int idx = 0;
+    // for (char &c : input) {
+    //     board[idx / 5][idx % 5] = c;
+    //     ++idx;
+    // }
+    for (int idx = 0; idx < 25;++idx) {
+        board[idx] = input[idx];
     }
 }
 
