@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -78,20 +79,25 @@ public:
 
 private:
     char board[5][5];
-    int neighbors[8];
+    vector<int> neighbors;
+    void showNeighbors();
 };
 
 void solver::solve(string input) {
     parseInput(input);
 
+    showNeighbors();
     for (int idx = 0; idx < 25; ++idx) {
         getNeighbors(idx);
     }
 }
 
 // parsing board as follows:
-// 1 2 3 4 5
-// 6 7 8 9 10
+// 0 1 2 3 4
+// 5 6 7 8 9
+// 10 11 12 13 14
+// 15 16 17 18 19
+// 20 21 22 23 24
 // ...
 void solver::parseInput(string input) {
     int idx = 0;
@@ -101,7 +107,55 @@ void solver::parseInput(string input) {
     }
 }
 
+// hardcoding a map for all 25 indices probably best solution here
+// this method is not good.
 void solver::getNeighbors(int idx) {
+    bool TOP = idx < 5;
+    bool LEFT = ((idx % 5) == 0);
+    bool RIGHT = ((idx % 5) == 4);
+    bool BOT = idx > 19;
+    neighbors.clear();
+
+    // center idx, no problems
+    if (!TOP && !LEFT && !RIGHT && !BOT) {
+        neighbors = {idx - 6, idx - 5, idx - 4, idx - 1, idx + 1, idx + 4, idx + 5, idx + 6};
+        return;
+    }
+
+    // corners
+    if ((TOP + LEFT + RIGHT + BOT) == 2) {
+        if (idx == 0)
+            neighbors = {1, 5, 6};
+        else if (idx == 4)
+            neighbors = {3, 8, 9};
+        else if (idx == 20)
+            neighbors = {15, 16, 21};
+        else if (idx == 24)
+            neighbors = {18, 19, 23};
+
+        return;
+    }
+
+    if (TOP)
+        neighbors = {idx - 1, idx + 1, idx + 4, idx + 5, idx + 6};
+    else if (LEFT)
+        neighbors = {idx - 5, idx - 4, idx + 1, idx + 5, idx + 6};
+    else if (RIGHT)
+        neighbors = {idx - 5, idx - 6, idx - 1, idx + 5, idx + 4};
+    else if (BOT)
+        neighbors = {idx - 1, idx + 1, idx - 4, idx - 5, idx - 6};
+}
+
+// debug
+void solver::showNeighbors() {
+    for (int idx = 0; idx < 25; ++idx) {
+        getNeighbors(idx);
+        cout << "Neighbors for index " << idx << ": ";
+        for (int i : neighbors) {
+            cout << i;
+        }
+        cout << endl;
+    }
 }
 
 int main() {
