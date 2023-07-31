@@ -38,7 +38,7 @@ void insert(struct Node *root, string word) {
     cur->EOW = true;
 }
 
-bool inTrie(struct Node *root, string word) {
+bool isWord(struct Node *root, string word) {
     struct Node *cur = root;
 
     for (int i = 0; i < word.length(); ++i) {
@@ -50,6 +50,20 @@ bool inTrie(struct Node *root, string word) {
     }
 
     return cur->EOW;
+}
+
+bool canMakeWord(struct Node *root, string word) {
+    struct Node *cur = root;
+
+    for (int i = 0; i < word.length(); ++i) {
+        int idx = word[i] - 'A';
+        if (!cur->children[idx])
+            return false;
+
+        cur = cur->children[idx];
+    }
+
+    return true;
 }
 
 void loadWords(Node *root, string path) {
