@@ -1,9 +1,9 @@
 // Boggle solver using a trie
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
-#include <algorithm>
 
 using namespace std;
 
@@ -101,7 +101,7 @@ private:
     vector<string> foundWords;
     void showNeighbors();
     void showWords(int count);
-    void findWords(vector<int> path,string word);
+    void findWords(vector<int> path, string word);
 };
 
 void solver::load(string path) {
@@ -116,20 +116,20 @@ bool lengthCompare(string a, string b) {
 void solver::solve(string input) {
     parseInput(input);
 
-    showNeighbors();
+    // showNeighbors();
     for (int idx = 0; idx < 25; ++idx) {
-        findWords({idx},"");
+        findWords({idx}, "");
     }
 
     sort(foundWords.begin(), foundWords.end(), lengthCompare);
     showWords(10);
 }
 
-void solver::showWords(int count=10) {
-    count = min(count, (int) foundWords.size());
+void solver::showWords(int count = 10) {
+    count = min(count, (int)foundWords.size());
 
     cout << "Displaying top words:" << endl;
-    for (int i = 0; i < count;++i) {
+    for (int i = 0; i < count; ++i) {
         cout << foundWords[i] << endl;
     }
 }
@@ -142,23 +142,24 @@ bool inPath(vector<int> vec, int key) {
     return false;
 }
 
-void solver::findWords(vector<int> path,string word) {
+void solver::findWords(vector<int> path, string word) {
     int idx = path.back();
     word += (board[idx]);
 
-    if (!canMakeWord(root,word))
+    if (!canMakeWord(root, word))
         return;
-    
-    if (isWord(root,word))
+
+    if (isWord(root, word))
         foundWords.push_back(word);
 
     getNeighbors(idx);
     vector<int> tmp = neighbors;
     for (const int &i : tmp) {
-        if (inPath(path,i))
+        if (inPath(path, i))
             continue;
         path.push_back(i);
         findWords(path, word);
+        path.pop_back();
     }
 }
 
@@ -175,7 +176,7 @@ void solver::parseInput(string input) {
     //     board[idx / 5][idx % 5] = c;
     //     ++idx;
     // }
-    for (int idx = 0; idx < 25;++idx) {
+    for (int idx = 0; idx < 25; ++idx) {
         board[idx] = input[idx];
     }
 }
