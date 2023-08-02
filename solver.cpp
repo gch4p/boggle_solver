@@ -159,7 +159,6 @@ void solver::findWords(vector<int> path, string word) {
             continue;
         path.push_back(i);
         findWords(path, word);
-        path.pop_back();
     }
 }
 
