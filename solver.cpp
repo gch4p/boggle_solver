@@ -115,6 +115,7 @@ bool lengthCompare(string a, string b) {
 
 void solver::solve(string input) {
     parseInput(input);
+    foundWords.clear();
 
     // showNeighbors();
     for (int idx = 0; idx < 25; ++idx) {
@@ -236,19 +237,22 @@ int main() {
 
     cout << "Loading wordlist...\n";
     solver.load("words.txt");
-    cout << "Wordlist loaded.\nEnter board state: ";
+    cout << "Wordlist loaded.\n";
 
     // cout << inTrie(root, "WHERE") << endl;
     // cout << inTrie(root, "WWWWW") << endl;
 
     string input;
-    cin >> input;
-    if (input.length() != 25) {
-        cout << "Invalid input";
-        return 1;
-    }
+    while (true) {
+        cout << "Enter board state or (e)xit: ";
+        cin >> input;
+        if (input.length() != 25)
+            cout << "ERROR: Input must be 25 characters." << endl;
+        if ((input == "exit") || (input == "e"))
+            break;
 
-    solver.solve(input);
+        solver.solve(input);
+    }
 
     return 0;
 }
